@@ -88,6 +88,14 @@ EOF
 
 Remove `--lan` for loopback-only startup. This wrapper starts DSH and local Termux ADB, not Android Wireless debugging or Clash Meta; after reboot, check Wi-Fi and ADB in Termux if the launcher cannot find the Wi-Fi address or the plugin cannot reach Android.
 
+## Why I built this
+
+My guess is that 99% of DeepSeek Harness users run the desktop app or host the Web UI on a full Linux system. But there might be a 1% whose setup looks like mine. That's who I built this plugin for.
+
+I run DeepSeek Harness on a headless Android box I built from a Samsung Galaxy Z Flip5 with a Snapdragon 8 Gen 2. Termux has a pretty good ecosystem, but in my setup the Clash Meta client runs in Android, outside Termux. I can open the DSH Web UI over my LAN, but I can't tap the proxy app on a box with no screen. With wireless ADB already paired, this plugin lets me check, start, or stop Clash Meta from DSH Settings without hooking up a display. I hope it helps other developers who work behind the Great Firewall and run DSH on headless Android hardware.
+
+![Headless Android box built from a Samsung Galaxy Z Flip5](docs/images/z-flip5-headless-box.jpg)
+
 ## Issues and license
 
 Report problems in [GitHub Issues](https://github.com/Annaabdullayeva/dsh-termux-adb-clashMeta/issues). Include Android, DSH, and Clash Meta versions and relevant error messages, but omit pairing codes and credentials.

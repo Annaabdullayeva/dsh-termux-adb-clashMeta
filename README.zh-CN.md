@@ -88,6 +88,14 @@ EOF
 
 去掉 `--lan` 即可改为仅允许本机访问。此脚本启动 DSH 和 Termux 本地 ADB 服务，但不会开启 Android 无线调试或启动 Clash Meta。若重启后脚本找不到 Wi-Fi 地址，或插件无法连接 Android，请在 Termux 中检查 Wi-Fi 和 ADB 连接。
 
+## 项目心得
+
+我猜，99% 的开发者用的是 DeepSeek Harness 桌面版，或者把网页版装在完整的 Linux 系统里。但也许还有 1% 的开发者用的是和我类似的环境，这个项目就是为他们做的。
+
+我把 DeepSeek Harness 部署在一台用三星 Galaxy Z Flip5 改装的无屏安卓盒子上，处理器是骁龙 8 Gen 2。说实话，Termux 的生态不算差，但在我的配置里，Clash Meta 代理客户端运行在 Android 系统里，不在 Termux 里。我能从局域网打开 DSH 网页，却不能直接在盒子上点开代理。这个插件用已配对的无线 ADB 从 DSH 设置页查询、开启或停止 Clash Meta，不用为此再给盒子接一块屏幕。我相信，对同样受到 GFW 限制、又使用无屏安卓设备的开发者，这会很有用。
+
+![由三星 Galaxy Z Flip5 改装的无屏安卓盒子](docs/images/z-flip5-headless-box.jpg)
+
 ## 问题反馈与许可证
 
 请在 [GitHub Issues](https://github.com/Annaabdullayeva/dsh-termux-adb-clashMeta/issues) 反馈问题。建议附上 Android、DSH 和 Clash Meta 的版本及相关错误信息，但不要提交配对码或凭据。
