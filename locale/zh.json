@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Clash Meta for Termux",
+    "description": "在设置中查看本机 Clash 状态，并通过已授权的本机无线调试连接开启或关闭 Clash。"
+  }
+}

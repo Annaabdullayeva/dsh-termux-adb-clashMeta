@@ -1,0 +1,40 @@
+{
+  "name": "dsh-termux-adb-clash",
+  "version": "1.0.0",
+  "description": "Check and control Clash on the local Android device from Settings.",
+  "license": "MIT",
+  "repository": "github:Annaabdullayeva/dsh-termux-adb-clashMeta",
+  "bugs": { "url": "https://github.com/Annaabdullayeva/dsh-termux-adb-clashMeta/issues" },
+  "keywords": ["dsh-plugin", "termux"],
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "backend.mjs",
+    "worker.mjs",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  }
+}

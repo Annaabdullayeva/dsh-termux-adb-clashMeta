@@ -1,0 +1,37 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Start DSH Web and the loopback-only Termux ADB server.
+set -eu
+export PATH="$HOME/.local/bin:/data/data/com.termux/files/usr/bin:/system/bin:$PATH"
+mode=local iface=wlan0 port=3080 wait_seconds=45
+usage(){ printf '%s\n' 'Usage: dsl [--lan] [--iface wlan0] [--port 3080] [--wait 45]' 'Defaults to 127.0.0.1. --lan binds to a Wi-Fi IPv4 after waiting for the interface.'; }
+while (( $# )); do
+  case "$1" in
+    --lan) mode=lan; shift ;;
+    --iface|--port|--wait)
+      (( $# >= 2 )) || { usage >&2; exit 2; }
+      case "$1" in --iface) iface=$2;; --port) port=$2;; --wait) wait_seconds=$2;; esac
+      shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+  esac
+done
+[[ $iface =~ ^wlan[0-9]+$ && $port =~ ^[1-9][0-9]{0,4}$ && $wait_seconds =~ ^(0|[1-9][0-9]{0,2})$ ]] && (( port <= 65535 )) || { usage >&2; exit 2; }
+bin=/data/data/com.termux/files/usr/bin
+command -v dsh >/dev/null || { echo 'DSH not found on PATH.' >&2; exit 1; }
+if ! (unset ADB_SERVER_SOCKET ANDROID_ADB_SERVER_ADDRESS ANDROID_ADB_SERVER_PORT; "$bin/timeout" 8s "$bin/adb" -P 5037 start-server); then
+  echo 'Local ADB startup failed; DSH can still run.' >&2
+fi
+address=127.0.0.1
+if [[ $mode == lan ]]; then
+  until_time=$((SECONDS + wait_seconds))
+  while :; do
+    address=$("$bin/node" -e 'const n=require("node:os").networkInterfaces()[process.argv[1]]; const a=n?.find(x=>x.family==="IPv4"&&!x.internal&&!x.address.startsWith("169.254.")); if(a) process.stdout.write(a.address)' "$iface") || exit 1
+    [[ -n $address ]] && break
+    if (( SECONDS >= until_time )); then
+      echo "No Wi-Fi IPv4 on $iface; starting on loopback only." >&2
+      address=127.0.0.1; break
+    fi
+    sleep 1
+  done
+fi
+exec dsh web --host "$address" --port "$port" --no-open

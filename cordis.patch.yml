@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-termux-adb-clash
+      name: dsh-termux-adb-clash
+      config: {}
